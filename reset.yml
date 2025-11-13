@@ -1,0 +1,10 @@
+---
+
+- name: make cluster
+  hosts: all
+  tasks:
+
+  - name: kubeadm reset
+    shell: yes | kubeadm reset
+    args:
+      executable: /bin/sh
