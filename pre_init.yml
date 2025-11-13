@@ -1,0 +1,172 @@
+---
+
+- name: make cluster
+  hosts: control
+  tasks:
+
+  - name: install apt-transport-https
+    apt:
+      name: apt-transport-https
+      state: present
+    tags:
+    - install
+    - apt
+    - apt-transport-https
+
+  - name: install curl
+    apt:
+      name: curl
+      state: present
+    tags:
+    - install
+    - apt
+    - curl
+
+  - name: install gpg
+    apt:
+      name: gpg
+      state: present
+    tags:
+    - install
+    - apt
+    - gpg
+
+  - name: install libyaml-libyaml-perl
+    apt:
+      name: libyaml-libyaml-perl
+      state: present
+    tags:
+    - install
+    - apt
+    - perl
+    - libyaml
+
+  - name: remove cdrom repo
+    shell: rm -f /etc/apt/sources.list.d/*cdrom*
+    args:
+      executable: /bin/sh
+    tags:
+    - install
+    - apt
+    - repos
+    - cdrom_rm
+
+  - name: deploy main repos
+    copy:
+      mode: 0644
+      owner: root
+      group: root
+      src: files/sources.list
+      dest: /etc/apt/sources.list
+    tags:
+    - install
+    - apt
+    - repos
+
+  - name: deploy repo script
+    copy:
+      mode: 1755
+      owner: root
+      group: root
+      src: files/repos.sh
+      dest: /root/repos.sh
+    tags:
+    - install
+    - apt
+    - repos
+    - keyrings
+
+  - name: run repo script
+    shell: /root/repos.sh
+    args:
+      executable: /bin/sh
+    tags:
+    - install
+    - apt
+    - repos
+    - keyrings
+
+  - name: deploy swap script
+    copy:
+      mode: 1755
+      owner: root
+      group: root
+      src: files/swapoff.sh
+      dest: /root/swapoff.sh
+    tags:
+    - install
+    - apt
+    - swap
+    - networking
+    - port_forward
+
+  - name: run swap script
+    shell: /root/swapoff.sh
+    args:
+      executable: /bin/sh
+    tags:
+    - install
+    - apt
+    - swap
+    - networking
+    - port_forward
+
+  - name: install crio
+    apt:
+      name: cri-o
+      state: present
+    tags:
+    - install
+    - apt
+    - gopkgs
+    - crio
+
+  - name: install kubeadm
+    apt:
+      name: kubeadm
+      state: present
+    tags:
+    - install
+    - apt
+    - gopkgs
+    - kubeadm
+
+  - name: install kubectl
+    apt:
+      name: kubectl
+      state: present
+    tags:
+    - install
+    - apt
+    - gopkgs
+    - kubectl
+
+  - name: install kubelet
+    apt:
+      name: kubelet
+      state: present
+    tags:
+    - install
+    - apt
+    - gopkgs
+    - kubelet
+
+  - name: enable services
+    shell: systemctl enable crio && systemctl enable kubelet && systemctl restart crio
+    args:
+      executable: /bin/sh
+    tags:
+    - install
+    - services
+    - crio
+    - kubelet
+    - systemd
+
+  - name: apply sysctl settings
+    shell: sysctl -f /etc/sysctl.d/k8s.conf
+    args:
+      executable: /bin/sh
+    tags:
+    - install
+    - sysctl
+    - networking
