@@ -1,0 +1,63 @@
+---
+
+- name: configure cluster
+  hosts: control
+  tasks:
+
+  - name: create root .kube
+    ansible.builtin.file:
+      path: /root/.kube
+      state: directory
+      mode: '0755'
+    tags:
+    - admin
+    - kubectl
+
+  - name: setup admin configs
+    shell: cp /etc/kubernetes/admin.conf $HOME/.kube/config && chown $(id -u):$(id -g) $HOME/.kube/config
+    args:
+      executable: /bin/sh
+    tags:
+    - admin
+    - kubectl
+
+  - name: setup encryption config dir
+    ansible.builtin.file:
+      path: /etc/kuberenetes/enc
+      state: directory
+      mode: '0755'
+    tags:
+    - encryption
+
+  - name: deploy encryption config
+    copy:
+      mode: 0600
+      owner: root
+      group: root
+      src: files/encryption_config.yml
+      dest: /etc/kubernetes/enc/enc.yaml
+    tags:
+    - etcd
+    - encryption
+
+  - name: deploy encryption script
+    copy:
+      mode: 1744
+      owner: root
+      group: root
+      src: files/encryption.pl
+      dest: /root/encryption.pl
+    tags:
+    - etcd
+    - encryption
+    - perl
+    - api
+
+  - name: execute encryption script
+    shell: perl /root/encryption.pl
+    args:
+      executable: /bin/sh
+    tags:
+    - etcd
+    - encryption
+    - perl
