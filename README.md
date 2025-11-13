@@ -24,3 +24,16 @@ resources:
     - identity: {}
 
 ```
+The encryption config can be upgraded to whatever, the `encryption.pl` script applies the change carefully and creates a backup.
+The script can be deployed along with any updates to the security configuration can be sent with the `post.yml` playbook.
+
+An example inventory:
+
+```
+[control]
+10.0.2.11
+10.0.2.13
+10.0.2.14
+```
+
+This project is just focused on a (3 or 5) node control plane. Worker configurations are not included, but joining them is as usual.
