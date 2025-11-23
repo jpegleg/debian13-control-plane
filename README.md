@@ -76,4 +76,4 @@ If you need to recover from the apiserver crashing, use kubeadm to reconstrct th
 kubeadm init phase control-plane apiserver
 ```
 
-Applying the change early in the life of the cluster, such as before any worker nodes are joined, is safer than applying the change in a busy cluster with many components already using the apiserver.Update README.md
+Applying the change early in the life of the cluster, such as before any worker nodes are joined, is safer than applying the change in a busy cluster with many components already using the apiserver.
