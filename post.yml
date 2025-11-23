@@ -79,7 +79,7 @@
     - perl
 
   - name: restart kube-apiserver pods
-    shell: kubectl get pods -n kube-system -o=jsonpath='{.itmes[?(@.metadata.labels.component=="kube-apiserver")].metadata.name}' | xargs echo | while read l; do kubectl delete po $l -n kube-system; done
+    shell: kubectl get pods -n kube-system -o=jsonpath='{.items[?(@.metadata.labels.component=="kube-apiserver")].metadata.name}' | xargs echo | while read l; do kubectl delete po $l -n kube-system; done
     args:
       executable: /bin/sh
     tags:
