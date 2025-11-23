@@ -9,7 +9,7 @@ The file `reset.yml` is a playbook to run to reset the cluster (destroy the clus
 Create an EncryptionConfiguration manifest named `files/encryption_config.yml`, example:
 
 ```
---
+---
 apiVersion: apiserver.config.k8s.io/v1
 kind: EncryptionConfiguration
 resources:
