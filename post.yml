@@ -28,7 +28,7 @@
     tags:
     - mkdir
 
-  - name: setup encryption config dir
+  - name: enforce directory permissions
     ansible.builtin.file:
       path: /etc/kuberenetes/enc
       state: directory
@@ -59,15 +59,6 @@
     - encryption
     - perl
     - api
-
-  - name: execute encryption script
-    shell: perl /root/encryption.pl
-    args:
-      executable: /bin/sh
-    tags:
-    - etcd
-    - encryption
-    - perl
 
   - name: execute encryption script
     shell: perl /root/encryption.pl
