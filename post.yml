@@ -21,16 +21,9 @@
     - admin
     - kubectl
 
-  - name: initial mkdir of enc directory
-    shell: ls /etc/kubernetes/etc || mkdir /etc/kubernetes/enc
-    args:
-      executable: /bin/sh
-    tags:
-    - mkdir
-
-  - name: enforce directory permissions
+  - name: enforce directory
     ansible.builtin.file:
-      path: /etc/kuberenetes/enc
+      path: /etc/kubernetes/enc
       state: directory
       mode: '755'
     tags:
