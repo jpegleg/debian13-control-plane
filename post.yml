@@ -21,7 +21,7 @@
     - admin
     - kubectl
 
-  - name: initial mkdir of enc directory, incase builtin fails
+  - name: initial mkdir of enc directory
     shell: ls /etc/kubernetes/etc || mkdir /etc/kubernetes/enc
     args:
       executable: /bin/sh
