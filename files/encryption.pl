@@ -15,7 +15,7 @@ my $enc_type        = 'DirectoryOrCreate';
 die "Manifest not found: $manifest\n" unless -f $manifest;
 
 my $ts = strftime('%Y%m%d%H%M%S', localtime);
-my $backup = "/root/$manifest.$ts.bak";
+my $backup = "/root/kube-apiserver.yaml.$ts.bak";
 copy($manifest, $backup) or die "Failed to back up manifest to $backup: $!";
 
 my $doc = LoadFile($manifest);
