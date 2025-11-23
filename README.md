@@ -68,10 +68,12 @@ crictl ps
 crictl logs $CONTAINERID
 ```
 
-Note that kubelet reads all files in /etc/kubernetes/manifests regardless of the extension, so extra files can cause issues.
+Note that kubelet reads all files in /etc/kubernetes/manifests regardless of the extension, so extra files can cause issues. Some clusters or configurations will have other needs not accounted for with the technique used here, which can cause services to fail. 
 
 If you need to recover from the apiserver crashing, use kubeadm to reconstrct the apiserver config and restart it:
 
 ```
 kubeadm init phase control-plane apiserver
 ```
+
+Applying the change early in the life of the cluster, such as before any worker nodes are joined, is safer than applying the change in a busy cluster with many components already using the apiserver.Update README.md
