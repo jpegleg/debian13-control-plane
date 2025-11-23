@@ -21,6 +21,13 @@
     - admin
     - kubectl
 
+  - name: initial mkdir of enc directory, incase builtin fails
+    shell: ls /etc/kubernetes/etc || mkdir /etc/kubernetes/enc
+    args:
+      executable: /bin/sh
+    tags:
+    - mkdir
+
   - name: setup encryption config dir
     ansible.builtin.file:
       path: /etc/kuberenetes/enc
@@ -61,3 +68,31 @@
     - etcd
     - encryption
     - perl
+
+  - name: execute encryption script
+    shell: perl /root/encryption.pl
+    args:
+      executable: /bin/sh
+    tags:
+    - etcd
+    - encryption
+    - perl
+
+  - name: restart kube-apiserver pods
+    shell: kubectl get pods -n kube-system -o=jsonpath='{.itmes[?(@.metadata.labels.component=="kube-apiserver")].metadata.name}' | xargs echo | while read l; do kubectl delete po $l -n kube-system; done
+    args:
+      executable: /bin/sh
+    tags:
+    - etcd
+    - encryption
+    - restart
+    - apiserver
+    
+  - name: replace secrets
+    shell: kubectl get secrets --all-namespaces -o json | kubectl replace -f -
+    args:
+      executable: /bin/sh
+    tags:
+    - etcd
+    - encryption
+    - replace
