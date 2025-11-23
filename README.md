@@ -27,7 +27,7 @@ resources:
 
 ```
 The encryption config can be upgraded to whatever, the `encryption.pl` script applies the change carefully and creates a backup.
-The script can be deployed along with any updates to the security configuration can be sent with the `post.yml` playbook.
+The script can be deployed, along with any updates to the security configuration, with the `post.yml` playbook.
 
 An example inventory:
 
@@ -59,9 +59,9 @@ If the data is still readable, then validate the configurations and then the las
 ansible-playbook -u root -i hosts.ini post.yml -t apiserver,replace
 ```
 
-If we the apiserver is refusing to pick up the encryption config, it may be because kubelet isn't configured to use the standard manifest path. 
+If the apiserver is refusing to pick up the encryption config, it may be because kubelet isn't configured to use the standard manifest path. 
 
-Debugging with `crictl` might help.
+If the system uses systemd, `journalctl -xe` may print information about any issues. Also debugging with `crictl` might help.
 
 ```
 crictl ps
