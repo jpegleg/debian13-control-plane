@@ -37,3 +37,33 @@ An example inventory:
 ```
 
 This project is just focused on a (3 or 5) node control plane, but can be used with a single node control plane, too. Worker configurations are not included, but joining them is as usual.
+
+Check to make sure the encryption is working with etcdctl.
+
+```
+kubectl create secret generic secrettest -n default --from-literal=mykey=testing
+
+ETCDCTL_API=3 etcdctl \
+   --cacert=/etc/kubernetes/pki/etcd/ca.crt   \
+   --cert=/etc/kubernetes/pki/etcd/server.crt \
+   --key=/etc/kubernetes/pki/etcd/server.key  \
+   get /registry/secrets/default/secrettest | hexdump -C
+
+```
+
+If the data is still readable, then validate the configurations and then the last two tasks in `post.yml` can be rerun to restart the apiserver and replace the secrets again.
+
+```
+ansible-playbook -u root -i hosts.ini post.yml -t apiserver,replace
+```
+
+If we the apiserver is refusing to pick up the encryption config, it may be because kubelet isn't configured to use the standard manifest path. 
+
+Debugging with `crictl` might help.
+
+```
+crictl ps
+crictl logs $CONTAINERID
+```
+
+Note that kubelet reads all files in /etc/kubernetes/manifests regardless of the extension, so extra files can cause issues.
