@@ -6,7 +6,9 @@ The file `post.yml` is a playbook to run after the cluster is formed to further 
 
 The file `reset.yml` is a playbook to run to reset the cluster (destroy the cluster).
 
-Create an EncryptionConfiguration manifest named `files/encryption_config.yml`, example:
+Create an EncryptionConfiguration manifest named `files/encryption_config.yml`. 
+
+An example is to generate a key with `head -c 32 /dev/urandom | base64` and have a simple AES encryption config like this, replacing PUTYOURENCODEDKEYHERE with the generated key:
 
 ```
 ---
@@ -68,7 +70,7 @@ crictl logs $CONTAINERID
 
 Note that kubelet reads all files in /etc/kubernetes/manifests regardless of the extension, so extra files can cause issues.
 
-It seems some versions of Kubernetes will not work with this technique. If you need to recover from the apiserver crashing, use kubeadm to reconstrct the apiserver config and restart it:
+If you need to recover from the apiserver crashing, use kubeadm to reconstrct the apiserver config and restart it:
 
 ```
 kubeadm init phase control-plane apiserver
