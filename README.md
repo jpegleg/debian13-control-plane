@@ -67,3 +67,9 @@ crictl logs $CONTAINERID
 ```
 
 Note that kubelet reads all files in /etc/kubernetes/manifests regardless of the extension, so extra files can cause issues.
+
+It seems some versions of Kubernetes will not work with this technique. If you need to recover from the apiserver crashing, use kubeadm to reconstrct the apiserver config and restart it:
+
+```
+kubeadm init phase control-plane apiserver
+```
