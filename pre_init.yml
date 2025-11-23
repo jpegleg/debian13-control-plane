@@ -53,7 +53,7 @@
 
   - name: deploy main repos
     copy:
-      mode: 0644
+      mode: '644'
       owner: root
       group: root
       src: files/sources.list
@@ -65,7 +65,7 @@
 
   - name: deploy repo script
     copy:
-      mode: 1755
+      mode: '755'
       owner: root
       group: root
       src: files/repos.sh
@@ -88,7 +88,7 @@
 
   - name: deploy swap script
     copy:
-      mode: 1755
+      mode: '755'
       owner: root
       group: root
       src: files/swapoff.sh
