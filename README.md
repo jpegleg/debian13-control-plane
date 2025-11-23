@@ -36,4 +36,4 @@ An example inventory:
 10.0.2.14
 ```
 
-This project is just focused on a (3 or 5) node control plane. Worker configurations are not included, but joining them is as usual.
+This project is just focused on a (3 or 5) node control plane, but can be used with a single node control plane, too. Worker configurations are not included, but joining them is as usual.
